@@ -7,7 +7,9 @@ size_t default_key_size(const char* key) {
 	return strlen(key);
 }
 
-char* default_key_clone(AM_ALLOCATOR_ARG const char* key, KeySize keySizeFunc) {
+char* default_key_clone(AM_ALLOCATOR_ARG
+						const char* key,
+						KeySize keySizeFunc) {
 	size_t keySize = keySizeFunc(key);
 	char* newKey = (char*) am_calloc(sizeof(*newKey), keySize);
 	NULL_CHECK_RET_NULL(newKey);
@@ -29,7 +31,12 @@ HashMapEntry* hme_create(AM_ALLOCATOR_PARAM const char* key, void* value) {
 	);
 }
 
-HashMapEntry* hme_create_full(AM_ALLOCATOR_PARAM const char* key, void* value, HashMapEntryKeyHandlers keyHandlers, HashMapEntry* prev, HashMapEntry* next) {
+HashMapEntry* hme_create_full(AM_ALLOCATOR_PARAM
+							  const char* key,
+							  void* value,
+							  HashMapEntryKeyHandlers keyHandlers,
+							  HashMapEntry* prev,
+							  HashMapEntry* next) {
 	HashMapEntry* entry  = (HashMapEntry*) am_malloc(sizeof(*entry));
 	NULL_CHECK_RET_NULL(entry);
 	entry->keyLength = keyHandlers.keySize(key);
