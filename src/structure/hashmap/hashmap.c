@@ -23,3 +23,4 @@ void hm_destroy(AM_ALLOCATOR_PARAM HashMap* hm) {
 	am_free(hm->items);
 	am_free(hm);
 }
+
