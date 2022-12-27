@@ -107,3 +107,20 @@ int hm_resize(AM_ALLOCATOR_PARAM HashMap* hm) {
 	hm->size = newSize;
 	return 0;
 }
+
+HashMapEntry* hm_get(HashMap* hm, const char* key) {
+	NULL_CHECK_RET_NULL(hm);
+	NULL_CHECK_RET_NULL(hm->entries);
+	NULL_CHECK_RET_NULL(key);
+	size_t hash = HASH_FUNC(key, hm->handlers.keySize);
+	size_t index = hash % hm->size;
+	for (int i = 0; i < hm->size; i++) {
+		if (hm->entries[index] != NULL
+			&& hm->entries[index]->key != NULL
+			&& hm->comparators.getComparator(key, hm->entries[index]->key, hm->entries[index])) {
+			return hm->entries[index];
+		}
+		index = (index + 1) % hm->size;
+	}
+	return NULL;
+}
