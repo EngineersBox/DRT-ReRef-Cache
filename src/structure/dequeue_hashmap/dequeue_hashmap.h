@@ -20,15 +20,15 @@ DequeueHashMap* dqhm_create(AM_ALLOCATOR_PARAM size_t size, HashMapComparators c
 void dqhm_destroy(AM_ALLOCATOR_PARAM DequeueHashMap* dqhm);
 
 void* dqhm_get(DequeueHashMap* dqhm, const char* key);
-int dqht_insert(AM_ALLOCATOR_PARAM DequeueHashMap* dqhm, const char* key, void* value);
-int dqht_delete(AM_ALLOCATOR_PARAM DequeueHashMap* dqhm, const char* key, void** removed);
+// -1: Failure, 0: No entry, 1: Matching entry
+int dqh_delete(AM_ALLOCATOR_PARAM DequeueHashMap* dqhm, const char* key, void** removed);
 
 void* dqhm_get_front(DequeueHashMap* dqhm);
-int dqht_push_front(AM_ALLOCATOR_PARAM DequeueHashMap* dqhm, const char* key, void* value);
+int dqhm_push_front(AM_ALLOCATOR_PARAM DequeueHashMap* dqhm, const char* key, void* value);
 void* dqht_pop_front(AM_ALLOCATOR_PARAM DequeueHashMap* dqhm, const char* key, void** removed);
 
 void* dqhm_get_last(DequeueHashMap* dqhm);
-int dqht_push_last(AM_ALLOCATOR_PARAM DequeueHashMap* dqhm, const char* key, void* value);
+int dqhm_push_last(AM_ALLOCATOR_PARAM DequeueHashMap* dqhm, const char* key, void* value);
 void* dqhm_pop_last(AM_ALLOCATOR_PARAM DequeueHashMap* dqhm, const char* key, void** removed);
 
 #ifdef __cplusplus

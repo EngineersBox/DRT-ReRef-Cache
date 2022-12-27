@@ -22,7 +22,7 @@ HashMapEntry* hme_create(AM_ALLOCATOR_PARAM const char* key, void* value) {
 			AM_ALLOCATOR_ARG
 			key,
 			value,
-			(HashMapEntryKeyHandlers) {
+			(KeyHandlers) {
 				.keySize = default_key_size,
 				.keyClone = default_key_clone
 			},
@@ -34,8 +34,8 @@ HashMapEntry* hme_create(AM_ALLOCATOR_PARAM const char* key, void* value) {
 HashMapEntry* hme_create_full(AM_ALLOCATOR_PARAM
 							  const char* key,
 							  void* value,
-							  HashMapEntryKeyHandlers keyHandlers,
-							  HashMapEntry* prev,
+							  KeyHandlers keyHandlers,
+							  HashMapEntry* previous,
 							  HashMapEntry* next) {
 	HashMapEntry* entry  = (HashMapEntry*) am_malloc(sizeof(*entry));
 	NULL_CHECK_RET_NULL(entry);
@@ -43,7 +43,7 @@ HashMapEntry* hme_create_full(AM_ALLOCATOR_PARAM
 	entry->key = keyHandlers.keyClone(AM_ALLOCATOR_ARG key, keyHandlers.keySize);
 	NULL_CHECK_RET_NULL(entry->key);
 	entry->value = value;
-	entry->prev = prev;
+	entry->previous = previous;
 	entry->next = next;
 	entry->index = 0;
 	return entry;
@@ -55,7 +55,7 @@ void hme_destroy(AM_ALLOCATOR_PARAM HashMapEntry* entry) {
 	am_free((void*) entry->key);
 	entry->key = NULL;
 	entry->next = NULL;
-	entry->prev = NULL;
+	entry->previous = NULL;
 	entry->index = 0;
 	am_free(entry);
 }

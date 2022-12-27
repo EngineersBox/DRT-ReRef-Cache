@@ -16,7 +16,7 @@ typedef struct HashMapEntry {
 	size_t index;
 	const char* key;
 	void* value;
-	struct HashMapEntry* prev;
+	struct HashMapEntry* previous;
 	struct HashMapEntry* next;
 } HashMapEntry;
 
@@ -25,7 +25,7 @@ HashMapEntry* hme_create_full(AM_ALLOCATOR_PARAM
 							  const char* key,
 							  void* value,
 							  KeyHandlers keyHandlers,
-							  HashMapEntry* prev,
+							  HashMapEntry* previous,
 							  HashMapEntry* next);
 void hme_destroy(AM_ALLOCATOR_PARAM HashMapEntry* entry);
 
