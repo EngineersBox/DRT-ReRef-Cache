@@ -10,7 +10,7 @@ extern "C" {
 #include <inttypes.h>
 #include <string.h>
 #include "../../preprocessor/checks.h"
-#include "hashmap_entry.h"
+#include "../key/key.h"
 
 #ifdef ARCH_64_BIT
 #define FNV_OFFSET 14695981039346656037UL
@@ -47,6 +47,12 @@ static size_t meiyan_hash(const char *key, KeySize keySizeFunc) {
 #undef tmp
     return h ^ (h >> 16);
 }
+
+#if defined(HASH_FUNC_TYPE) && HASH_FUNC_TYPE == MEIYAN
+#define HASH_FUNC(key, keySizeFunc) meiyan_hash(key, keySizeFunc)
+#else
+#define HASH_FUNC(key, keySizeFunc) fnv1a_hash(key, keySizeFunc)
+#endif
 
 #ifdef __cplusplus
 };

@@ -9,6 +9,7 @@ extern "C" {
 
 #include <stddef.h>
 #include "../../allocator/alloc_manager.h"
+#include "../key/key.h"
 
 typedef struct HashMapEntry {
 	size_t keyLength;
@@ -19,16 +20,13 @@ typedef struct HashMapEntry {
 	struct HashMapEntry* next;
 } HashMapEntry;
 
-typedef size_t (*KeySize)(const char*);
-typedef char* (*KeyClone)(AM_ALLOCATOR_PARAM const char*, KeySize);
-
-typedef struct HashMapEntryKeyHandlers {
-	KeySize keySize;
-	KeyClone keyClone;
-} HashMapEntryKeyHandlers;
-
 HashMapEntry* hme_create(AM_ALLOCATOR_PARAM const char* key, void* value);
-HashMapEntry* hme_create_full(AM_ALLOCATOR_PARAM const char* key, void* value, HashMapEntryKeyHandlers keyHandlers, HashMapEntry* prev, HashMapEntry* next);
+HashMapEntry* hme_create_full(AM_ALLOCATOR_PARAM
+							  const char* key,
+							  void* value,
+							  KeyHandlers keyHandlers,
+							  HashMapEntry* prev,
+							  HashMapEntry* next);
 void hme_destroy(AM_ALLOCATOR_PARAM HashMapEntry* entry);
 
 #ifdef __cplusplus
