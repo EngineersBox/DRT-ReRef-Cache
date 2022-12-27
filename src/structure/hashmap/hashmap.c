@@ -66,3 +66,44 @@ int hm_insert(AM_ALLOCATOR_PARAM
 	}
 	return 0;
 }
+
+int hm_resize_insert(HashMapComparators* comparators,
+					 HashMapEntry** entries,
+					 size_t size,
+					 HashMapEntry* entry,
+					 size_t index) {
+	while (entries[index] != NULL) {
+		if (comparators->insertComparator(entry->key, entries[index]->key, entries[index]->value) == 0) {
+			return -1;
+		}
+		index = (index + 1) % size;
+	}
+	entries[index] = entry;
+	entries[index]->index = index;
+	return 0;
+}
+
+int hm_resize(AM_ALLOCATOR_PARAM HashMap* hm) {
+	size_t newSize = hm->size * 2;
+	if (newSize < hm->size) {
+		return -1;
+	}
+	HashMapEntry** newEntries = (HashMapEntry**) am_calloc(newSize, sizeof(HashMapEntry*));
+	NULL_CHECK_RET_VAL(newEntries, -1);
+	size_t hash;
+	size_t index;
+	for (int i = 0; i < hm->size; i++) {
+		if (hm->entries[i] == NULL) {
+			continue;
+		}
+		hash = HASH_FUNC(hm->entries[i]->key, hm->handlers.keySize);
+		index = hash % newSize;
+		if (hm_resize_insert(&hm->comparators, newEntries, newSize, hm->entries[i], index) != 0) {
+			return -1;
+		}
+	}
+	am_free(hm->entries);
+	hm->entries = newEntries;
+	hm->size = newSize;
+	return 0;
+}
