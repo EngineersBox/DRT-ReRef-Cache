@@ -124,3 +124,32 @@ HashMapEntry* hm_get(HashMap* hm, const char* key) {
 	}
 	return NULL;
 }
+
+void* hm_delete_entry(AM_ALLOCATOR_PARAM HashMap* hm, size_t index) {
+	NULL_CHECK_RET_NULL(hm);
+	NULL_CHECK_RET_NULL(hm->entries);
+	NULL_CHECK_RET_NULL(hm->entries[index]);
+	void* value = hm->entries[index]->value;
+	hm->entries[index]->value = NULL;
+	hme_destroy(AM_ALLOCATOR_ARG hm->entries[index]);
+	hm->count--;
+	hm->entries[index] = NULL;
+	return value;
+}
+
+void* hm_delete(AM_ALLOCATOR_PARAM HashMap* hm, const char* key) {
+	NULL_CHECK_RET_NULL(hm);
+	NULL_CHECK_RET_NULL(hm->entries);
+	NULL_CHECK_RET_NULL(key);
+	size_t hash = HASH_FUNC(key, hm->handlers.keySize);
+	size_t index = hash % hm->size;
+	for (int i = 0; i < hm->size; i++) {
+		if (hm->entries[index] != NULL
+			&& hm->entries[index]->key != NULL
+			&& hm->comparators.deleteComparator(key, hm->entries[index]->key, hm->entries[index]) == 0) {
+			return hm_delete_entry(AM_ALLOCATOR_ARG hm, index);
+		}
+		index = (index + 1) % hm->size;
+	}
+	return NULL;
+}
