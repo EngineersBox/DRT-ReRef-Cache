@@ -53,5 +53,4 @@ int dqhm_delete(AM_ALLOCATOR_PARAM DequeueHashMap* dqhm, const char* key, void**
 		*removed = removedValue;
 	}
 	NULL_CHECK_RET_VAL(removedValue, 0);
-	dqhm_unlink(dqhm, )
 }

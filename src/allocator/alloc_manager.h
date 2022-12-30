@@ -9,7 +9,7 @@ extern "C" {
 
 #ifndef ALLOCATOR_TYPE
 #define ALLOCATOR_TYPE 0
-#error No ALLOCATOR_TYPE defined, must be one of (0: kernel, 1: TLSF, 2: GLIBC)
+//#error No ALLOCATOR_TYPE defined, defaulting to Kernel. Value must be one of (0: kernel, 1: TLSF, 2: GLIBC)
 #endif
 
 #if ALLOCATOR_TYPE == 0

@@ -10,6 +10,8 @@ extern "C" {
 #include "../key/key.h"
 #include "../hashmap/hashmap.h"
 
+// TODO: Merge this structure with the base hashmap structure
+
 typedef struct DequeueHashMap {
 	HashMapEntry* head;
 	HashMapEntry* tail;
