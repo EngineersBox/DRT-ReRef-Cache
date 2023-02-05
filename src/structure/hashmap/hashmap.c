@@ -11,7 +11,7 @@ HashMap* hm_create(AM_ALLOCATOR_PARAM size_t size, HashMapComparators comparator
 	map->comparators = comparators;
 	map->handlers = handlers;
 	map->entries = (HashMapEntry**) am_calloc(sizeof(HashMapEntry*), size);
-	NULL_CHECK_RET_NULL(map->entries);
+	NULL_CHECK_RET_NULL_FREE(map->entries, map);
 	return map;
 }
 
@@ -99,6 +99,7 @@ int hm_resize(AM_ALLOCATOR_PARAM HashMap* hm) {
 		hash = HASH_FUNC(hm->entries[i]->key, hm->handlers.keySize);
 		index = hash % newSize;
 		if (hm_resize_insert(&hm->comparators, newEntries, newSize, hm->entries[i], index) != 0) {
+			am_free(newEntries);
 			return -1;
 		}
 	}

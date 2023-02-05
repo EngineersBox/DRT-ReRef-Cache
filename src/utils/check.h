@@ -7,7 +7,9 @@
 extern "C" {
 #endif
 
+#define NULL_CHECK_RET_VAL_FREE(target, value, freeable) if ((target) == NULL) { am_free((freeable)); return (value); }
 #define NULL_CHECK_RET_VAL(target, value) if ((target) == NULL) return (value)
+#define NULL_CHECK_RET_NULL_FREE(target, freeable) NULL_CHECK_RET_VAL_FREE(target, NULL, freeable)
 #define NULL_CHECK_RET_NULL(target) NULL_CHECK_RET_VAL(target, NULL)
 #define NULL_CHECK_RET_NONE(target) if ((target) == NULL) return
 

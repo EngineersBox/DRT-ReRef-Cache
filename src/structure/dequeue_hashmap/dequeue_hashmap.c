@@ -11,7 +11,7 @@ DequeueHashMap* dqhm_create(AM_ALLOCATOR_PARAM
 	dqhm->head = NULL;
 	dqhm->tail = NULL;
 	dqhm->hm = hm_create(AM_ALLOCATOR_ARG size, comparators, handlers);
-	NULL_CHECK_RET_NULL(dqhm->hm);
+	NULL_CHECK_RET_NULL_FREE(dqhm->hm, dqhm);
 	return dqhm;
 }
 
